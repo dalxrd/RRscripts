@@ -15,8 +15,8 @@ reward = str(input("Денежное вознаграждение (10 = 10kkk): 
 print("----- золото -----")
 g_all = int(input("Какое значение депов сейчас: "))
 g_lim = int(input("Лимит: "))
-is_limits = bool(input("Настроить остальные лимиты? (1 - да, 0 - нет): "))
-if is_limits:
+is_limits = bool(int(input("Настроить остальные лимиты? (1 - да, 0 - нет): ")))
+if is_limits is True:
     print("----- стройки -----")
     b_all = int(input("Какое значение депов сейчас: "))
     b_lim = int(input("Лимит: "))
@@ -132,7 +132,8 @@ def get_accounts(url, r_all, r_lim, resource, is_limit):
                 }
                 acc_list.append(dictionary)
                 print(f"{dictionary['id']} {dictionary['nickname']} {dictionary['resource']}")
-                return acc_list
+
+    return acc_list
 
 
 # цикл: Открыть акк -> перевести ему грн -> закрыть окно
