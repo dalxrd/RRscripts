@@ -74,8 +74,8 @@ try:
     email_input = browser.find_element(By.NAME, 'mail')
     password_input = browser.find_element(By.NAME, 'p')
     submit_button = browser.find_element(By.NAME, 's')
-    email_input.send_keys('epicktabs@gmail.com')
-    password_input.send_keys('ktsnt3gv')
+    email_input.send_keys('-')
+    password_input.send_keys('-')
     submit_button.submit()
 except Exception as e:
     print('Не удалось залогиниться. Ошибка:', e)
@@ -109,13 +109,13 @@ def get_accounts(url, r_all, r_lim, resource, is_limit):
         date = cells[3].text  # дата
         nickname_deps = cells[1].text  # никнейм и в скобках депы
         deps = int(nickname_deps[-3:-1])
-        if date.startswith('Сьогодні'):
+        if date.startswith('Сегодня'):
             # обработка лимитов
             if is_limits:
                 if r_all >= r_lim:
                     r_all -= deps
             # print(nickname_deps, date)
-        elif date.startswith('Вчора'):
+        elif date.startswith('Вчера'):
             # обработка лимитов
             if is_limit:
                 if r_all >= r_lim:
