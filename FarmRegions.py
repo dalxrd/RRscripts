@@ -1,4 +1,5 @@
 # Список регионов госки, с отображением работающих акков в них
+import json
 
 from lxml import html
 import requests
@@ -13,16 +14,12 @@ main_url = "https://rivalregions.com/"
 
 # ------------------------АВТОРИЗАЦИЯ------------------------------------------
 session = requests.session()
-cookies = {
-    "_iub_cs-76236742": "%7B%22consent%22%3Atrue%2C%22timestamp%22%3A%222023-03-13T11%3A23%3"
-                        "A32.182Z%22%2C%22version%22%3A%221.2.4%22%2C%22id%22%3A76236742%7D",
-    "PHPSESSID": "6d84v1rdsd9il9kvjffnqie4al",
-    "rr": "622a242da584bf4bd2a2c676b4ed0762",
-    "rr_id": "103324011071709",
-    "rr_add": "70eb94af86433c6dfcd4b13d7b650a79",
-    "rr_f": "2fec49987c90a9a5620567f8529f0148",
-    "io": "1TytOojZeAYJsPxoA0xj"
-}
+with open('cookies.json', 'r') as f:
+    cookies_list = json.load(f)
+# Создание словаря cookies
+cookies = {}
+for cookie in cookies_list:
+    cookies[cookie['name']] = cookie['value']
 response_login = session.get(main_url, cookies=cookies)
 print(f"------- Авторизация: {response_login.status_code}-------")
 # -----------------------------------------------------------------------------
