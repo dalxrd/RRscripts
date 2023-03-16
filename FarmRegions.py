@@ -27,7 +27,7 @@ print(f"------- Авторизация: {response_login.status_code}-------")
 
 # -----------------------------------------------------------------------------
 if response_login.status_code != 200:
-    pass
+    print("Ошибка")
 else:
     response_state = session.get(f"{main_url}/map/state_details/{id_state}", cookies=cookies)
     content_type = response_state.headers.get('Content-Type')
@@ -62,22 +62,25 @@ else:
 
         if gold != 0:
 
-            id_region = region.get('user')
+            region_id = region.get('user')
             # перейти на страницу рега
-            response_region = session.get(f"{main_url}/map/details/{id_region}", cookies=cookies)
+            response_region = session.get(f"{main_url}/map/details/{region_id}", cookies=cookies)
             tree_region = html.fromstring(response_region.text)
 
             # название рега
             h1_element = tree_region.xpath('//h1[@class="white slide_title"]')[0]
             text_elements = h1_element.xpath('.//text()')
             text = ''.join(text_elements).strip()
-            match = re.search(r'регіон ([^,]*(?: область)?)', text)
-            if match:
-                region_name = match.group(1)[:-11]
-                if region_name[-1] == "и":
-                    region_name = region_name[:-12]
-            else:
-                region_name = "Івано-Франківська область"
+            # match = re.search(r'регіон ([^,]*(?: область)?)', text)
+            # if match:
+            #     region_name = match.group(1)[:-11]
+            #     print(region_name)
+            #     if region_name[-1] == "и":
+            #         region_name = region_name[:-12]
+            #         print(region_name)
+            # else:
+            #     region_name = "Івано-Франківська область"
+            region_name = text
             # индекс медицины
             div_element = tree_region.xpath('//div[@class="short_details tc imp float_left no_pointer spd hosp_wiki"]')[0]
             span = div_element.xpath('./span')[0]
@@ -88,10 +91,10 @@ else:
             gr = int(region.xpath("./td")[4].get('rat'))
 
             # перейти на страницу фабрик рега
-            response_factories = session.get(f"{main_url}factory/search/{id_region}/0/6", cookies=cookies)
+            response_factories = session.get(f"{main_url}factory/search/{region_id}/0/6", cookies=cookies)
             tree_factories = html.fromstring(response_factories.text)
-            # лучшая фабрика
             tbody_list_tbody = tree_factories.xpath("//tbody[@id='list_tbody']")[0]
+            # лучшая фабрика
             factory_best = tbody_list_tbody.xpath('./tr')[0]
             factory_lvl = factory_best.xpath("./td")[2].text
             factory_workers = factory_best.xpath("./td")[3].text
@@ -99,7 +102,7 @@ else:
             # print(factory_lvl, factory_workers, factory_sallary)
 
             # перейти на страницу со списком онлайна в реге
-            response_online = session.get(f"{main_url}/listed/online/{id_region}", cookies=cookies)
+            response_online = session.get(f"{main_url}/listed/online/{region_id}", cookies=cookies)
             tree_online = html.fromstring(response_online.text)
             # получить кол-во онлайна
             h1_element = tree_online.xpath('//h1[@class="white slide_title"]')[0]
@@ -111,8 +114,8 @@ else:
 
             # собрать все
             dictionary = {
-                "id": id_region,
-                "url": main_url + "#map/details/" + id_region,
+                "id": region_id,
+                "url": main_url + "#map/details/" + region_id,
                 "name": region_name,
                 "online": region_online,
                 "gold": gold,
