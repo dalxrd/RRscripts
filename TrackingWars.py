@@ -8,8 +8,8 @@ import requests
 import re
 
 # -------------------------ЛИНКИ------------------------------
-timer = 10
-id_state = "2976"
+timer = 120
+id_state = "4228"
 main_url = "https://rivalregions.com/"
 # ------------------------------------------------------------
 
@@ -121,7 +121,7 @@ else:
                 # заменить элементы
                 wars[index] = d
 
-                print(f"({difference}) {d['damage']} | {d['left']} {d['right']}")
+                print(f"({difference}) {d['damage']} | {d['left']} - {d['right']}")
 
             print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
